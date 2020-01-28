@@ -17,6 +17,6 @@ weblib==0.1.30
 six==1.13.0
 user-agent==0.1.9
 grab==0.6.41
-feedgen==0.8.0
+feedgen==0.9.0
 
 
