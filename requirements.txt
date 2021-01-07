@@ -10,7 +10,7 @@ setuptools==40.2.0
 Werkzeug==0.14.1
 wheel==0.31.1
 # custom
-lxml==4.4.1
+lxml==4.6.2
 pycurl==7.43.0.3
 selection==0.0.14
 weblib==0.1.30
