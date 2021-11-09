@@ -30,13 +30,12 @@ def feed_http(request):
     if count == 0:
         itm_list = []
     else:
-        articles = g.doc.select('//section[contains(@class, "f-vacancylist-leftwrap")]'
-                                '/div[2]/table[contains(@class, "vacancylist")]').one()
-        itm_list = articles.select("tr[@id]/td/article/div[1]")
+        articles = g.doc.select('//table[contains(@class, "f-vacancylist-tablewrap")]').one()
+        itm_list = articles.select('tr[@id]/td/article/div[contains(@class, "card-body")]')
     for item in itm_list:
-        vac_title = item.select("div/h3/a").text().strip()
-        vac_url = g.make_url_absolute(item.select("div/h3/a/@href").text())
-        vac_description = item.select('div/p[contains(@class, "shortdescr")]').text().strip()
+        vac_title = item.select('//h2[contains(@class, "card-title")]/a/@title').text().strip()
+        vac_url = g.make_url_absolute(item.select('//h2[contains(@class, "card-title")]/a/@href').text())
+        vac_description = item.select('//div[contains(@class, "card-description")]').text().strip()
         fe = fg.add_entry()
         print(vac_title)
         fe.id(vac_url)
