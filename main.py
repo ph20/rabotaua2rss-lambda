@@ -3,6 +3,7 @@ from flask import escape, make_response
 from grab import Grab
 from feedgen.feed import FeedGenerator
 from urllib.parse import urlparse
+import weblib
 
 
 def feed_http(request):
@@ -33,9 +34,12 @@ def feed_http(request):
         articles = g.doc.select('//table[contains(@class, "f-vacancylist-tablewrap")]').one()
         itm_list = articles.select('tr[@id]/td/article/div[contains(@class, "card-body")]')
     for item in itm_list:
-        vac_title = item.select('//h2[contains(@class, "card-title")]/a/@title').text().strip()
-        vac_url = g.make_url_absolute(item.select('//h2[contains(@class, "card-title")]/a/@href').text())
-        vac_description = item.select('//div[contains(@class, "card-description")]').text().strip()
+        vac_title = item.select('div[1]//h2[contains(@class, "card-title")]/a/@title').text().strip()
+        vac_url = g.make_url_absolute(item.select('div[1]//h2[contains(@class, "card-title")]/a/@href').text())
+        try:
+            vac_description = item.select('div[contains(@class, "card-description")]').text().strip()
+        except weblib.error.DataNotFound:
+            vac_description = 'N/A'
         fe = fg.add_entry()
         print(vac_title)
         fe.id(vac_url)
